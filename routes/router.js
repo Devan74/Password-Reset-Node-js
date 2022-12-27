@@ -13,16 +13,14 @@ const keysecret = process.env.SECRET_KEY
 // email config
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    service: "gmail",
+    service: "Gmail",
     auth: {
         user: process.env.EMAIL,
         pass: process.env.PASSWORD
     }
 })
-
+// console.log(process.env.EMAIL)
+// console.log(process.env.PASSWORD)
 
 // for user registration
 
@@ -132,7 +130,7 @@ router.get("/logout", authenticate, async (req, res) => {
         req.rootUser.tokens = req.rootUser.tokens.filter((curelem) => {
             return curelem.token !== req.token
         });
-
+// console.log(res)
         res.clearCookie("usercookie", { path: "/" });
 
         req.rootUser.save();
@@ -161,7 +159,7 @@ router.post("/sendpasswordlink", async (req, res) => {
 
         // token generate for reset password
         const token = jwt.sign({ _id: userfind._id }, keysecret, {
-            expiresIn: "120s"
+            expiresIn: "1hr"
         });
 
         const setusertoken = await userdb.findByIdAndUpdate({ _id: userfind._id }, { verifytoken: token }, { new: true });
@@ -172,7 +170,7 @@ router.post("/sendpasswordlink", async (req, res) => {
                 from: process.env.EMAIL,
                 to: email,
                 subject: "Sending Email For password Reset",
-                text: `This Link Valid For 2 MINUTES http://localhost:3001/forgotpassword/${userfind.id}/${setusertoken.verifytoken}`
+                text: `This Link Valid For 1 HOUR http://localhost:3000/forgotpassword/${userfind.id}/${setusertoken.verifytoken}`
             }
 
             transporter.sendMail(mailOptions, (error, info) => {
