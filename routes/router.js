@@ -159,7 +159,7 @@ router.post("/sendpasswordlink", async (req, res) => {
 
         // token generate for reset password
         const token = jwt.sign({ _id: userfind._id }, keysecret, {
-            expiresIn: "1hr"
+            expiresIn: "120s"
         });
 
         const setusertoken = await userdb.findByIdAndUpdate({ _id: userfind._id }, { verifytoken: token }, { new: true });
@@ -170,7 +170,7 @@ router.post("/sendpasswordlink", async (req, res) => {
                 from: process.env.EMAIL,
                 to: email,
                 subject: "Sending Email For password Reset",
-                text: `This Link Valid For 1 HOUR https://singular-starlight-98fe95.netlify.app/forgotpassword/${userfind.id}/${setusertoken.verifytoken}`
+                text: `This Link Valid For 2 minutes https://singular-starlight-98fe95.netlify.app/forgotpassword/${userfind.id}/${setusertoken.verifytoken}`
             }
 
             transporter.sendMail(mailOptions, (error, info) => {
