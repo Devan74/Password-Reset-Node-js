@@ -14,7 +14,7 @@ app.get("/",(req,res)=>{
 
 app.use(express.json());
 app.use(cookiParser());
-app.use(cors());
+app.use(cors("https://singular-starlight-98fe95.netlify.app"));
 app.use(router);
 
 
