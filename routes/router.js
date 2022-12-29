@@ -159,7 +159,7 @@ router.post("/sendpasswordlink", async (req, res) => {
 
         // token generate for reset password
         const token = jwt.sign({ _id: userfind._id }, keysecret, {
-            expiresIn: "120s"
+            expiresIn: "1hr"
         });
 
         const setusertoken = await userdb.findByIdAndUpdate({ _id: userfind._id }, { verifytoken: token }, { new: true });
